@@ -20,14 +20,14 @@ export abstract class Item implements Comparable<Item> {
   }
 
   protected id: number;
-  protected name: string;
-  protected value: number;
-  protected weight: number;
+  public name: string;
+  public value: number;
+  public weight: number;
 
   constructor(name: string, value: number, weight: number) {
-    this.setName(name);
-    this.setValue(value);
-    this.setWeight(weight);
+    this.name = name;
+    this.value = value;
+    this.weight = weight;
 
     Item.numberOfItems += 1;
     id += 1;
@@ -37,28 +37,8 @@ export abstract class Item implements Comparable<Item> {
     return this.id;
   }
 
-  public getValue() {
-    return this.value;
-  }
-
-  public getName() {
-    return this.name;
-  }
-
   public getWeight() {
     return this.weight.toFixed(2);
-  }
-
-  public setValue(value: number) {
-    this.value = value;
-  }
-
-  public setName(name: string) {
-    this.name = name;
-  }
-
-  public setWeight(weight: number) {
-    this.weight = weight;
   }
 
   public compareTo(other: Item) {
