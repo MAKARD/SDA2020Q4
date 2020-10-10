@@ -16,7 +16,7 @@ export class Sword extends Weapon {
     const maxDamageModifier = baseDamage * 0.25;
     const nextDamageModifier = this.getDamageModifier() + Weapon.MODIFIER_CHANGE_RATE;
 
-    if (baseDamage + nextDamageModifier > baseDamage  + maxDamageModifier) {
+    if (baseDamage + nextDamageModifier > baseDamage + maxDamageModifier) {
       return;
     }
 
