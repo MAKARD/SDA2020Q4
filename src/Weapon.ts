@@ -6,9 +6,9 @@ export abstract class Weapon extends Item {
   abstract polish(): void;
 
   protected baseDamage: number;
-  protected damageModifier: number;
+  protected damageModifier = 0;
   protected baseDurability: number;
-  protected durabilityModifier: number;
+  protected durabilityModifier = 0;
 
   constructor(
     name: string,
@@ -47,12 +47,20 @@ export abstract class Weapon extends Item {
     this.baseDamage = damage;
   }
 
+  public getBaseDurability() {
+    return this.baseDurability;
+  }
+
+  public getBaseDamage() {
+    return this.baseDamage;
+  }
+
   public getDamageModifier() {
-    return this.damageModifier;
+    return Number((this.damageModifier).toFixed(2));
   }
 
   public getDurabilityModifier() {
-    this.durabilityModifier;
+    return Number((this.durabilityModifier).toFixed(2));
   }
 
   protected getStatus(): 'operable' | 'breaking' | 'broken' {
