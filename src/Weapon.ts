@@ -3,6 +3,8 @@ import { Item } from './Item';
 export abstract class Weapon extends Item {
   public static readonly MODIFIER_CHANGE_RATE = 0.05;
 
+  abstract polish(): void;
+
   protected baseDamage: number;
   protected damageModifier: number;
   protected baseDurability: number;
@@ -17,7 +19,7 @@ export abstract class Weapon extends Item {
   ) {
     super(name, value, weight);
 
-    this.baseDamage = baseDamage;
+    this.setBaseDamage(baseDamage);
     this.setBaseDurability(baseDurability);
   }
 
@@ -37,11 +39,23 @@ export abstract class Weapon extends Item {
     return this.baseDurability + this.durabilityModifier;
   }
 
-  private setBaseDurability(durability: number) {
+  public setBaseDurability(durability: number) {
     this.baseDurability = durability;
   }
 
-  private getStatus(): 'operable' | 'breaking' | 'broken' {
+  public setBaseDamage(damage: number) {
+    this.baseDamage = damage;
+  }
+
+  public getDamageModifier() {
+    return this.damageModifier;
+  }
+
+  public getDurabilityModifier() {
+    this.durabilityModifier;
+  }
+
+  protected getStatus(): 'operable' | 'breaking' | 'broken' {
     const durability = this.getDurability();
 
     if (durability > Weapon.MODIFIER_CHANGE_RATE) {

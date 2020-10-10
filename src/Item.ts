@@ -14,23 +14,51 @@ const compareValues = (
 }
 
 export abstract class Item implements Comparable<Item> {
+  public static numberOfItems = id;
   public static reset() {
     id = 0;
   }
 
-  public id: number;
-  public name: string;
-  public value: number;
-  public weight: number;
+  protected id: number;
+  protected name: string;
+  protected value: number;
+  protected weight: number;
 
   constructor(name: string, value: number, weight: number) {
-    this.name = name;
-    this.weight = weight;
-    this.value = value;
+    this.setName(name);
+    this.setValue(value);
+    this.setWeight(weight);
 
-    this.id = id;
-
+    Item.numberOfItems += 1;
     id += 1;
+  }
+
+  public getId() {
+    return this.id;
+  }
+
+  public getValue() {
+    return this.value;
+  }
+
+  public getName() {
+    return this.name;
+  }
+
+  public getWeight() {
+    return this.weight.toFixed(2);
+  }
+
+  public setValue(value: number) {
+    this.value = value;
+  }
+
+  public setName(name: string) {
+    this.name = name;
+  }
+
+  public setWeight(weight: number) {
+    this.weight = weight;
   }
 
   public compareTo(other: Item) {
