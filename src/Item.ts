@@ -14,7 +14,10 @@ const compareValues = (
 }
 
 export abstract class Item implements Comparable<Item> {
-  public static numberOfItems = id;
+  public static get numberOfItems() {
+    return id;
+  }
+
   public static reset() {
     id = 0;
   }
@@ -29,7 +32,6 @@ export abstract class Item implements Comparable<Item> {
     this.value = value;
     this.weight = weight;
 
-    Item.numberOfItems += 1;
     id += 1;
   }
 
