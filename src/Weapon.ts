@@ -63,7 +63,7 @@ export abstract class Weapon extends Item {
     return Number((this.durabilityModifier).toFixed(2));
   }
 
-  protected getStatus(): 'operable' | 'breaking' | 'broken' {
+  private getStatus(): 'operable' | 'breaking' | 'broken' {
     const durability = this.getDurability();
 
     if (durability > Weapon.MODIFIER_CHANGE_RATE) {

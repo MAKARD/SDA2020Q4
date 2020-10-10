@@ -2,7 +2,7 @@ import { Item } from './Item';
 import { ItemWeightComparator } from './ItemWeightComparator';
 
 export class Inventory {
-  private items: Array<Item> = [];
+  protected items: Array<Item> = [];
 
   public addItem(item: Item) {
     this.items.push(item);

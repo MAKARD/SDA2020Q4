@@ -1,4 +1,6 @@
-export class Consumable {
+import { Item } from './Item';
+
+export class Consumable extends Item {
   protected name: string;
   protected value: number;
   protected weight: number;
@@ -11,9 +13,8 @@ export class Consumable {
     weight: number,
     spoiled: boolean
   ) {
-    this.name = name;
-    this.value = value;
-    this.weight = weight;
+    super(name, value, weight);
+
     this.spoiled = spoiled;
   }
 
@@ -45,12 +46,5 @@ export class Consumable {
 
   public isSpoiled() {
     return this.spoiled;
-  }
-
-  public toString() {
-    const valueText = `Value: ${this.value}`;
-    const weightText = `Weight: ${this.weight.toFixed(2)}`;
-
-    return `${this.name} - ` + [valueText, weightText].join(', ').trim();
   }
 }
