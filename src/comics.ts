@@ -14,6 +14,30 @@ export class Comics extends Item {
     this.artist = artist;
   }
 
+  public getArtist() {
+    return this.artist;
+  }
+
+  public setArtist(artist: string) {
+    this.artist = artist;
+  }
+
+  public getTitle() {
+    return this.title;
+  }
+
+  public setTitle(title: string) {
+    this.title = title;
+  }
+
+  public getAuthor() {
+    return this.author;
+  }
+
+  public setAuthor(author: string) {
+    this.author = author;
+  }
+
   public toString = () => {
     return `Comics: ${this.title} by ${this.author}, the artist is ${this.artist}, number of pages: ${this.pages.length}`;
   }

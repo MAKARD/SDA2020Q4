@@ -10,6 +10,14 @@ export class Magazine extends Item {
     this.title = title;
   }
 
+  public getTitle() {
+    return this.title;
+  }
+
+  public setTitle(title: string) {
+    this.title = title;
+  }
+
   public toString = () => {
     return `Magazine: ${this.title} with number of pages: ${this.pages.length}`;
   }
