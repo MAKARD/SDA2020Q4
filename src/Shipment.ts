@@ -1,4 +1,4 @@
-export interface ShipmentState {
+interface ShipmentState {
   shipmentId: number;
   toAddress: string;
   fromAddress: string;
