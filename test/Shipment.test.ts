@@ -65,9 +65,10 @@ describe('Shipment', () => {
     const from = `from: ${fullDefaults.fromAddress}/${fullDefaults.fromZipCode}`;
     const to = `to: ${fullDefaults.toAddress}/${fullDefaults.toZipCode}`;
     const cost = `cost: ${COST}`;
+    const marks = fullDefaults.marks.map((mark) => `**MARK ${mark.toUpperCase()}**`).join('\n');
 
     expect(shipment.ship()).toBe(
-      `${shipmentId}, ${from}, ${to}, ${cost}`
+      `${shipmentId}, ${from}, ${to}, ${cost}\n${marks}`
     );
   });
 });

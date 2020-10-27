@@ -38,7 +38,9 @@ export class Shipment {
   public getToZipCode = () => this.state.toZipCode;
   public getFromZipCode = () => this.state.fromZipCode;
   public getWeight = () => this.state.weight;
-  public getMarks = () => this.state.marks;
+  public getMarks() {
+    return this.state.marks || [];
+  }
 
   public setToAddress = (toAddress: string) => {
     this.state.toAddress = toAddress;
@@ -73,7 +75,8 @@ export class Shipment {
     const from = `from: ${this.getFromAddress()}/${this.getFromZipCode()}`;
     const to = `to: ${this.getToAddress()}/${this.getToZipCode()}`;
     const cost = `cost: ${this.shipper.getCost(this.getWeight())}`;
+    const marks = this.getMarks().map((mark) => `**MARK ${mark.toUpperCase()}**`).join('\n');
 
-    return [shipmentId, from, to, cost].join(', ').trim();
+    return [shipmentId, from, to, cost].join(', ').trim() + `\n${marks}`;
   }
 }
