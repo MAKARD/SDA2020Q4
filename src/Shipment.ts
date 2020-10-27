@@ -1,3 +1,5 @@
+import { Shipper } from './Shipper';
+
 interface ShipmentState {
   shipmentId: number;
   toAddress: string;
@@ -10,6 +12,7 @@ interface ShipmentState {
 
 export class Shipment {
   private state: ShipmentState;
+  private shipper: Shipper;
 
   constructor(state: Omit<ShipmentState, 'shipmentId'>) {
     this.state = {
@@ -22,6 +25,8 @@ export class Shipment {
     this.setFromZipCode(state.fromZipCode);
     this.setToZipCode(state.toZipCode);
     state.marks && this.setMarks(state.marks);
+
+    this.shipper = new Shipper(state.fromZipCode);
   }
 
   public getShipmentID = () => {
@@ -64,12 +69,10 @@ export class Shipment {
   }
 
   public ship = () => {
-    const RATE = 39;
-
     const shipmentId = `shipmentId: ${this.getShipmentID()}`;
     const from = `from: ${this.getFromAddress()}/${this.getFromZipCode()}`;
     const to = `to: ${this.getToAddress()}/${this.getToZipCode()}`;
-    const cost = `cost: ${this.getWeight() * RATE}`;
+    const cost = `cost: ${this.getWeight() * this.shipper.getCost()}`;
 
     return [shipmentId, from, to, cost].join(', ').trim();
   }

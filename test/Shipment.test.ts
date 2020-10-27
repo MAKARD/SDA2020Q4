@@ -9,6 +9,16 @@ const fullDefaults = {
   marks: ['mark 1', 'mark 2']
 }
 
+const COST = 39;
+
+jest.mock('../src/Shipper', () => {
+  return {
+    Shipper: jest.fn().mockReturnValue({
+      getCost: () => COST
+    })
+  };
+});
+
 describe('Shipment', () => {
   it('should initialize corresponding getters', () => {
     const shipment = new Shipment(fullDefaults);
@@ -54,7 +64,7 @@ describe('Shipment', () => {
     const shipmentId = `shipmentId: ${shipment.getShipmentID()}`;
     const from = `from: ${fullDefaults.fromAddress}/${fullDefaults.fromZipCode}`;
     const to = `to: ${fullDefaults.toAddress}/${fullDefaults.toZipCode}`;
-    const cost = `cost: ${fullDefaults.weight * 39}`;
+    const cost = `cost: ${fullDefaults.weight * COST}`;
 
     expect(shipment.ship()).toBe(
       `${shipmentId}, ${from}, ${to}, ${cost}`
