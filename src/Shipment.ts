@@ -26,7 +26,7 @@ export class Shipment {
     this.setToZipCode(state.toZipCode);
     state.marks && this.setMarks(state.marks);
 
-    this.shipper = new Shipper(state.fromZipCode);
+    this.shipper = new Shipper(state.fromZipCode, state.weight);
   }
 
   public getShipmentID = () => {
@@ -72,7 +72,7 @@ export class Shipment {
     const shipmentId = `shipmentId: ${this.getShipmentID()}`;
     const from = `from: ${this.getFromAddress()}/${this.getFromZipCode()}`;
     const to = `to: ${this.getToAddress()}/${this.getToZipCode()}`;
-    const cost = `cost: ${this.getWeight() * this.shipper.getCost()}`;
+    const cost = `cost: ${this.shipper.getCost(this.getWeight())}`;
 
     return [shipmentId, from, to, cost].join(', ').trim();
   }
