@@ -1,11 +1,14 @@
 import { SingleConvert } from './models/SingleConvert';
 
+import { Input, Slider } from './components';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const root = document.getElementById('root')!;
+const root = document.getElementById('root')!;
 
-  const input = document.createElement('input');
-  new SingleConvert().test();
+let inputValue = '1';
+const onChange = (value: string) => {
+  console.log('change');
+  (window as any).inputValue = value;
+}
 
-  root.appendChild(input);
-});
+root.appendChild(Input({ onChange, value: inputValue, id: 'test', type: 'number' }));
+root.appendChild(Slider({ onChange: () => { }, value: '1', id: 'test2' }));
