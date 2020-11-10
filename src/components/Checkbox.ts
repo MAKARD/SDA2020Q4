@@ -16,7 +16,7 @@ export const Checkbox: Component<HTMLInputElement, Props> = ({
   input.id = id;
 
   input.addEventListener('change', (event: ComponentEvent) => {
-    onChange(event.currentTarget.value === 'true');
+    onChange((event.currentTarget as any).checked);
   });
 
   return input;

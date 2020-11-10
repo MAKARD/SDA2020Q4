@@ -1,7 +1,7 @@
 import { Input, Text, Block } from '../components';
 import { Currency, View } from '../global';
 
-export const CurrencySection = (currency: Currency): View => (
+export const CurrencySectionInput = (currency: Currency): View => (
   onChangeValue,
   values,
   rate
@@ -9,7 +9,7 @@ export const CurrencySection = (currency: Currency): View => (
   id: `${currency}Section`,
   style: {
     border: '1px solid black',
-    marginTop: '25px',
+    marginBottom: '25px',
     backgroundColor: '#e3e3e3'
   },
   children: [

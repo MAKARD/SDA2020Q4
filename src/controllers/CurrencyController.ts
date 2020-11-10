@@ -4,6 +4,8 @@ import { Converter } from '../models/Converter';
 
 export class CurrencyController {
   private view: View;
+  private prevView: HTMLElement;
+  private type: Currency;
 
   private parentValue: number;
   private childValue: number;
@@ -13,11 +15,20 @@ export class CurrencyController {
     this.view = view(type);
     this.parentValue = 100;
     this.converter = new Converter(type);
+    this.type = type;
 
     this.childValue = this.converter.getAmountForward(this.parentValue);
   }
 
+  public setView = (view: (type: Currency) => View) => {
+    this.view = view(this.type);
+  }
+
   public render(root: HTMLElement) {
+    if (this.prevView) {
+      root.removeChild(this.prevView);
+    }
+
     const element = this.view(
       (value, executor) => {
         const parsedValue = parseFloat(value);
@@ -40,8 +51,7 @@ export class CurrencyController {
       this.converter.getRate()
     );
 
-    root.innerHTML = '';
-
     root.appendChild(element);
+    this.prevView = element;
   }
 }

@@ -9,7 +9,7 @@ export const Slider: Component<HTMLInputElement, InputLikeProps> = ({
   const input = document.createElement('input');
   input.type = 'range';
   input.min = '1';
-  input.max = '100';
+  input.max = '10000';
   
   input.readOnly = readonly;
 
