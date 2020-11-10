@@ -2,6 +2,7 @@ import { Component, ComponentEvent, InputLikeProps } from "../global";
 
 export const Input: Component<HTMLInputElement, InputLikeProps> = ({
   onChange,
+  readonly,
   value,
   type,
   id
@@ -9,7 +10,11 @@ export const Input: Component<HTMLInputElement, InputLikeProps> = ({
   const input = document.createElement('input');
   input.id = id;
   input.value = value;
-  input.type = type;
+  input.readOnly = readonly;
+
+  if (type) {
+    input.type = type;
+  }
 
   input.addEventListener('change', (event: ComponentEvent) => {
     onChange(event.currentTarget.value);

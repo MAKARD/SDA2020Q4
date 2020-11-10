@@ -7,9 +7,15 @@ interface Props {
 export const Block: Component<HTMLElement, Props> = ({
   id,
   children,
+  style = {}
 }) => {
   const block = document.createElement('div');
   block.id = id;
+
+  Object.keys(style).forEach((name) => {
+    block.style[name] = style[name];
+  });
+
   children.forEach((child) => {
     block.appendChild(child);
   });

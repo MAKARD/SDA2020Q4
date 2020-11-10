@@ -2,6 +2,7 @@ import { Component, ComponentEvent, InputLikeProps } from "../global";
 
 export const Slider: Component<HTMLInputElement, InputLikeProps> = ({
   onChange,
+  readonly,
   value,
   id
 }) => {
@@ -10,6 +11,8 @@ export const Slider: Component<HTMLInputElement, InputLikeProps> = ({
   input.min = '1';
   input.max = '100';
   
+  input.readOnly = readonly;
+
   input.value = value;
   input.id = id;
 

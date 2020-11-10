@@ -2,15 +2,21 @@ import Currencies from '../data/currencies.json';
 import { Currency } from '../global';
 
 export class Converter {
-  public getCurrencyRate = (currency: Currency) => {
-    return Currencies[currency];
+  public type: Currency;
+
+  constructor(type: Currency) {
+    this.type = type;
   }
 
-  public getAmountForCurrencyForward = (targetAmount: number, currency: Currency) => {
-    return targetAmount * Currencies[currency];
+  public getRate = () => {
+    return Currencies[this.type];
   }
 
-  public getAmountForCurrencyBackward = (targetAmount: number, currency: Currency) => {
-    return targetAmount / Currencies[currency];
+  public getAmountForward = (targetAmount: number) => {
+    return targetAmount * this.getRate();
+  }
+
+  public getAmountBackward = (targetAmount: number) => {
+    return targetAmount /this.getRate();
   }
 }
