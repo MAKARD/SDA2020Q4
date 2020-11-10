@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "amd",
+    "module": "AMD",
     "sourceMap": true,
-    "outFile": "dist/index.js"
+    "outDir": "dist",
+    "moduleResolution": "node"
   },
   "compileOnSave": true,
 }
