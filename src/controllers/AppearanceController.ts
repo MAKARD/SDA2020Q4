@@ -3,8 +3,7 @@ import { Currency, View } from "../global";
 import { CurrencyController } from "./CurrencyController";
 
 export class AppearanceController {
-  private controller: CurrencyController;
-  private controllerType: Currency;
+  public controller: CurrencyController;
   private viewRenderers: {
     slider: (type: Currency) => View,
     input: (type: Currency) => View,
@@ -23,7 +22,6 @@ export class AppearanceController {
     },
   ) {
     this.controller = new Controller(viewRenderers[this.currentView], controllerType);
-    this.controllerType = controllerType;
     this.viewRenderers = viewRenderers;
   }
 

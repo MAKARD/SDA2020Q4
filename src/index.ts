@@ -1,17 +1,18 @@
 import Currencies from './data/currencies.json';
+import { Currency } from './global';
 
 import { Block } from './components';
 
 import { CurrencyController } from './controllers/CurrencyController';
 import { AppearanceController } from './controllers/AppearanceController';
+import { SingleModeController } from './controllers/SingleModeController';
 
 import { CurrencySectionSlider } from './views/CurrencySectionSlider';
 import { CurrencySectionInput } from './views/CurrencySectionInput';
-import { Currency } from './global';
 
 const root = document.getElementById('root')!;
 
-const initializeControllers = () => {
+const initializeControllers = (singleModeController: SingleModeController) => {
   Object.keys(Currencies).forEach((key) => {
     const block = Block({
       id: `${key}Block`,
@@ -20,13 +21,17 @@ const initializeControllers = () => {
 
     root.appendChild(block);
 
-    const Controller = new AppearanceController(CurrencyController, key as Currency, {
+    const appearanceController = new AppearanceController(CurrencyController, key as Currency, {
       input: CurrencySectionInput,
       slider: CurrencySectionSlider
     });
 
-    Controller.render(block)
+    singleModeController.appendController(appearanceController.controller);
+    appearanceController.render(block)
   });
 }
 
-initializeControllers();
+const singleModeController = new SingleModeController();
+singleModeController.render(root);
+
+initializeControllers(singleModeController);
