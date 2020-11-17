@@ -7,24 +7,41 @@ module.exports = class RegisterAccountAction {
         this.accountManager = null;
     }
 
-    register(account) {
-        if (account.name.length <= 5) {
+    validateName(name) {
+        if (name.length <= 5) {
             throw new WrongAccountNameException(account.name);
         }
-        const password = account.password;
+    }
+
+    validatePassword(password) {
         if (password.length <= 8) {
             if (this.passwordChecker.validate(password) !== this.passwordChecker.result.OK) {
                 throw new WrongPasswordException();
             }
         }
+    }
+
+    validateAccount(account) {
+        this.validateName(account.name);
+        this.validatePassword(account.password);
+    }
+
+    register(account) {
+        this.validateAccount(account);
 
         account.setCreatedDate(new Date());
+
+        account.setAddresses(this.getFullAddress(account));
+        this.accountManager.createNewAccount(account);
+    }
+
+    getFullAddress(account) {
         const addresses = new Set();
         addresses.add(account.getHomeAddress());
         addresses.add(account.getWorkAddress());
         addresses.add(account.getAdditionalAddress());
-        account.setAddresses(addresses);
-        this.accountManager.createNewAccount(account);
+
+        return addresses
     }
 
     setAccountManager(accountManager) {
