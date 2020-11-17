@@ -4,28 +4,28 @@ const fs = require('fs');
 const PropertyUtil = require('./lib/PropertyUtil');
 const InvalidFileTypeError = require('./lib/InvalidFileTypeError');
 const InvalidDirectoryException = require('./lib/InvalidDirectoryException');
-const FileExtPred = require('./FileExtPred');
+const FileExtensionPredicate = require('./FileExtensionPredicate');
 
-const TYPES = ['jpg', 'png'];
-const TYPES2 = ['pdf', 'doc'];
+const IMAGES = ['jpg', 'png'];
+const DOCUMENTS = ['pdf', 'doc'];
 
 module.exports = class FileManager {
     constructor() {
-        this.bp = PropertyUtil.loadProperty('basePath');
+        this.directoryPath = PropertyUtil.loadProperty('basePath');
     }
 
-    retrieveFile(fileName) {
+    getRetrievedFile(fileName) {
         this.validateFileType(fileName);
-        const dirPath = this.bp + path.sep;
-        return path.resolve(dirPath, fileName);
+
+        return path.resolve(this.directoryPath + path.sep, fileName);
     }
 
-    listAllImages() {
-        return this.files(this.bp, TYPES);
+    getImages() {
+        return this.getFiles(this.directoryPath, IMAGES);
     }
 
-    listAllDocumentFiles() {
-        return this.files(this.bp, TYPES2);
+    getDocumentFiles() {
+        return this.getFiles(this.directoryPath, DOCUMENTS);
     }
 
     validateFileType(fileName) {
@@ -39,35 +39,37 @@ module.exports = class FileManager {
     }
 
     isInvalidImage(fileName) {
-        const imageExtensionsPredicate = new FileExtPred(TYPES);
+        const imageExtensionsPredicate = new FileExtensionPredicate(IMAGES);
+
         return !imageExtensionsPredicate.test(fileName);
     }
 
     isInvalidDocument(fileName) {
-        const documentExtensionsPredicate = new FileExtPred(TYPES2);
+        const documentExtensionsPredicate = new FileExtensionPredicate(DOCUMENTS);
         return !documentExtensionsPredicate.test(fileName);
     }
 
-    files(directoryPath, allowedExtensions) {
-        const pred = new FileExtPred(allowedExtensions);
-        return this.directory(directoryPath).filter((str) => {
-            return pred.test(str);
-        });
+    getFiles(directoryPath, allowedExtensions) {
+        const predicate = new FileExtensionPredicate(allowedExtensions);
+
+        return this.directory(directoryPath).filter(predicate.test);
     }
 
-    directory(directoryPath) {
-        const dirSt = fs.statSync(directoryPath);
-        this.validateDirectory(dirSt, directoryPath);
+    getDirectory(directoryPath) {
+        const directoryStatus = fs.statSync(directoryPath);
+
+        this.validateDirectory(directoryStatus, directoryPath);
+
         return fs.readdirSync(directoryPath);
     }
 
-    validateDirectory(stats, directoryPath) {
-        if (this.isNotDirectory(stats)) {
+    validateDirectory(status, directoryPath) {
+        if (this.isNotDirectory(status)) {
             throw new InvalidDirectoryException('Invalid directory found: ' + directoryPath);
         }
     }
 
-    isNotDirectory(stats) {
-        return !stats.isDirectory();
+    isNotDirectory(status) {
+        return !status.isDirectory();
     }
 };

@@ -1,23 +1,24 @@
 const { msg } = require('./lib/constants');
 
 module.exports = class CollectOrderService {
-    constructor(arg1, arg2) {
-        this.ser1 = arg1;
-        this.ser2 = arg2;
+    constructor(mainServer, echoServer) {
+        this.setMainServer(mainServer);
+        this.setEchoServer(echoServer);
     }
 
-    submitOrder(pOrder) {
-        if (this.ser1.isEligibleForCollection(pOrder))
-            this.ser2.notifyCustomer(msg.READY_FOR_COLLECT, 4); // 4 - info notification level
-        else
-            this.ser2.notifyCustomer(msg.IMPOSSIBLE_TO_COLLECT, 1); // 1 - critical notification level
+    submitOrder(order) {
+        if (this.mainServer.isEligibleForCollection(order)) {
+            this.echoServer.notifyCustomer(msg.READY_FOR_COLLECT, 4); // 4 - info notification level
+        } else {
+            this.echoServer.notifyCustomer(msg.IMPOSSIBLE_TO_COLLECT, 1); // 1 - critical notification level
+        }
     }
 
-    setSer1(ser1) {
-        this.ser1 = ser1;
+    setMainServer(mainServer) {
+        this.mainServer = mainServer;
     }
 
-    setSer2(ser2) {
-        this.ser2 = ser2;
+    setEchoServer(echoServer) {
+        this.echoServer = echoServer;
     }
 };

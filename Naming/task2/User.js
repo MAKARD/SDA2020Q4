@@ -1,14 +1,14 @@
 module.exports = class User {
-    constructor(sName) {
-        this.dBirth;
-        this.sName = sName;
-        this.bAdmin = false;
-        this.subordinateArray = [];
-        this.iR;
+    constructor(name) {
+        this.birth;
+        this.name = name;
+        this.isAdmin = false;
+        this.subordinates = [];
+        this.rating;
     }
 
     toString() {
-        return 'User [dBirth=' + this.dBirth + ', sName=' + this.sName + ', bAdmin=' + this.bAdmin + ', subordinateArray='
-            + this.subordinateArray + ', iRating=' + this.iR + ']';
+        return 'User [birth=' + this.birth + ', name=' + this.name + ', isAdmin=' + this.isAdmin + ', subordinates='
+            + this.subordinates + ', rating=' + this.rating + ']';
     }
 };

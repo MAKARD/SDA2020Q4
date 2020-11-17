@@ -1,10 +1,3 @@
-const os = require('os');
-
-const PLUS = '+';
-const PIPE = '|';
-const MINUS = '-';
-const UNDERSCORE = ' _ ';
-
 function repeat(symbol, times) {
     let result = '';
     for (let i = 0; i < times; i++) {
@@ -13,18 +6,24 @@ function repeat(symbol, times) {
     return result;
 }
 
-function formatKyeValue(key, value) {
-    const content = key + UNDERSCORE + value;
-    const minuses = repeat(MINUS, content.length);
+/*
+    output example:
+    +-------------+
+    |enable _ true|
+    +-------------+
+*/
+function formatKeyValue(key, value) {
+    const content = key + ' _ ' + value;
+    const outLine = repeat('-', content.length);
 
-    return PLUS + minuses + PLUS + os.EOL
-        + PIPE + content + PIPE + os.EOL +
-        PLUS + minuses + PLUS + os.EOL;
+    return `+${outLine}+\n` +
+           `|${content}|\n` +
+           `+${outLine}+\n`;
 }
 
 function main() {
-    console.log(formatKyeValue('enable', 'true'));
-    console.log(formatKyeValue('name', 'Bob'));
+    console.log(formatKeyValue('enable', 'true'));
+    console.log(formatKeyValue('name', 'Bob'));
 }
 
 main();

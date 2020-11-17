@@ -1,13 +1,13 @@
 module.exports = class CustomerContactServiceImpl {
-    constructor(customerContactDAO) {
-        this.customerContactDAO = customerContactDAO;
+    constructor(DAO) {
+        this.DAO = DAO;
     }
 
-    findCustomerContactDetailsByCustomerId(customerId) {
-        return this.customerContactDAO.findById(customerId);
+    findDetailsByCustomerId(customerId) {
+        return this.DAO.findById(customerId);
     }
 
-    updateCustomerContactDetails(customerContactDetails) {
-        this.customerContactDAO.update(customerContactDetails);
+    updateDetails(details) {
+        this.DAO.update(details);
     }
 };
