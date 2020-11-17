@@ -1,9 +1,9 @@
 module.exports = class AccountDetails {
     constructor(birth, startDate, balance, age) {
-        this.birth = birth;
-        this.startDate = startDate;
-        this.balance = balance;
-        this.age = age;
+        this.setBirth(birth);
+        this.setStartDate(startDate);
+        this.setBalance(balance);
+        this.setAge(age);
     }
 
     getBirth() {
