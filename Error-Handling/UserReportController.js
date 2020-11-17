@@ -3,9 +3,29 @@ module.exports = class UserReportController {
         this.userReportBuilder = null;
     }
 
+    handleError = (error) => {
+        switch (Number(error.message)) {
+            case 0: {
+                return null;
+            }
+            case -1: {
+                return 'WARNING: User ID doesn\'t exist.';
+            }
+            case -2: {
+                return 'WARNING: User have no submitted orders.';
+            }
+            case -3: {
+                return 'ERROR: Wrong order amount.';
+            }
+            default: {
+                return null;
+            }
+        }
+    }
+
     getUserTotalOrderAmountView(userId, model) {
         const totalMessage = this.getUserTotalMessage(userId);
-        if (totalMessage === null)
+        if (totalMessage === null) 
             return 'technicalError';
 
         model.addAttribute('userTotalMessage', totalMessage);
@@ -14,17 +34,12 @@ module.exports = class UserReportController {
     }
 
     getUserTotalMessage(userId) {
-        const amount = this.userReportBuilder.getUserTotalOrderAmount(userId);
-
-        if (amount == null)
-            return null;
-
-        if (amount === -1)
-            return 'WARNING: User ID doesn\'t exist.';
-        if (amount === -2)
-            return 'WARNING: User have no submitted orders.';
-        if (amount === -3)
-            return 'ERROR: Wrong order amount.';
+        let amount;
+        try {
+            amount = this.userReportBuilder.getUserTotalOrderAmount(userId);
+        } catch (error) {
+            return this.handleError(error);
+        }
 
         return `User Total: ${amount}$`;
     }

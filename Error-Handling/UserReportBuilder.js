@@ -4,24 +4,26 @@ module.exports = class UserReportBuilder {
     }
 
     getUserTotalOrderAmount(userId) {
-        if (this.userDao === null)
-            return null;
+        const userDao = this.getUserDao();
 
-        const user = this.userDao.getUser(userId);
-        if (user === null)
-            return -1;
+        const user = userDao.getUser(userId);
+        if (user === null) {
+            throw new Error(-1);
+        }
 
         const orders = user.getAllOrders();
-
-        if (!orders.length)
-            return -2;
+        if (!orders.length) {
+            throw new Error(-2);
+        }
 
         let sum = 0;
         for (let order of orders) {
             if (order.isSubmitted()) {
                 const total = order.total();
-                if (total < 0)
-                    return -3;
+                if (total < 0) {
+                    throw new Error(-3);
+                }
+
                 sum += total;
             }
         };
@@ -30,6 +32,10 @@ module.exports = class UserReportBuilder {
     }
 
     getUserDao() {
+        if (!this.userDao) {
+            throw new Error(0);
+        }
+
         return this.userDao;
     }
 
