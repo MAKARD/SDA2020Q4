@@ -1,40 +1,27 @@
 const os = require('os');
 
+const { getMaxColumnSize } = require('./getMaxColumnSize');
+const { getProceededRows } = require('./getProceededRows');
+const { getProceededColumns } = require('./getProceededColumns');
+
 function getEmptyTable(tableName) {
     const textEmptyTable = '║ Table "' + tableName + '" is empty or does not exist ║';
+
     let result = '╔';
     for (let i = 0; i < textEmptyTable.length - 2; i++) {
         result += '═';
     }
+
     result += '╗' + os.EOL;
     result += textEmptyTable + os.EOL;
     result += '╚';
+
     for (let i = 0; i < textEmptyTable.length - 2; i++) {
         result += '═';
     }
+
     result += '╝' + os.EOL;
     return result;
-}
-
-function getMaxColumnSize(dataSets) {
-    let maxLength = 0;
-    if (dataSets.length > 0) {
-        const columnNames = dataSets[0].getColumnNames();
-        for (const columnName of columnNames) {
-            if (columnName.length > maxLength) {
-                maxLength = columnName.length;
-            }
-        }
-        for (const dataSet of dataSets) {
-            const values = dataSet.getValues();
-            for (const value of values) {
-                if (value.toString().length > maxLength) {
-                    maxLength = value.toString().length;
-                }
-            }
-        }
-    }
-    return maxLength;
 }
 
 function getColumnCount(dataSets) {
@@ -42,148 +29,114 @@ function getColumnCount(dataSets) {
     if (dataSets.length > 0) {
         return dataSets[0].getColumnNames().length;
     }
+
     return result;
 }
 
 function getHeaderOfTheTable(dataSets) {
-    let maxColumnSize = getMaxColumnSize(dataSets);
-    let result = '';
+    const maxColumnSize = getMaxColumnSize(dataSets);
     const columnCount = getColumnCount(dataSets);
-    if (maxColumnSize % 2 === 0) {
-        maxColumnSize += 2;
-    } else {
-        maxColumnSize += 3;
-    }
-    result += '╔';
-    for (let j = 1; j < columnCount; j++) {
-        for (let i = 0; i < maxColumnSize; i++) {
-            result += '═';
+
+    let result = '';
+
+    result += getProceededRows(
+        columnCount,
+        maxColumnSize,
+        {
+            appendBeforeAll: '╔',
+            appendAfterAll: '╗' + os.EOL,
+            appendAfterEach: '╦'
         }
-        result += '╦';
-    }
-    for (let i = 0; i < maxColumnSize; i++) {
-        result += '═';
-    }
-    result += '╗' + os.EOL;
-    const columnNames = dataSets[0].getColumnNames();
-    for (let column = 0; column < columnCount; column++) {
-        result += '║';
-        const columnNamesLength = columnNames[column].length;
-        if (columnNamesLength % 2 === 0) {
-            for (let j = 0; j < (maxColumnSize - columnNamesLength) / 2; j++) {
-                result += ' ';
-            }
-            result += columnNames[column].toString();
-            for (let j = 0; j < (maxColumnSize - columnNamesLength) / 2; j++) {
-                result += ' ';
-            }
-        } else {
-            for (let j = 0; j < Math.trunc((maxColumnSize - columnNamesLength) / 2); j++) {
-                result += ' ';
-            }
-            result += columnNames[column].toString();
-            for (let j = 0; j <= Math.trunc((maxColumnSize - columnNamesLength) / 2); j++) {
-                result += ' ';
-            }
+    );
+
+    result += getProceededColumns(
+        {
+            columnNames: dataSets[0].getColumnNames(),
+            columnCount,
+            maxColumnSize,
+        },
+        {
+            appendBeforeEach: '║',
+            appendAfterAll: '║' + os.EOL,
         }
-    }
-    result += '║' + os.EOL;
+    );
 
     //last string of the header
     if (dataSets.length > 0) {
-        result += '╠';
-        for (let j = 1; j < columnCount; j++) {
-            for (let i = 0; i < maxColumnSize; i++) {
-                result += '═';
+        result += getProceededRows(
+            columnCount,
+            maxColumnSize,
+            {
+                appendBeforeAll: '╠',
+                appendAfterEach: '╬',
+                appendAfterAll: '╣' + os.EOL
             }
-            result += '╬';
-        }
-        for (let i = 0; i < maxColumnSize; i++) {
-            result += '═';
-        }
-        result += '╣' + os.EOL;
+        );
     } else {
-        result += '╚';
-        for (let j = 1; j < columnCount; j++) {
-            for (let i = 0; i < maxColumnSize; i++) {
-                result += '═';
+        result += getProceededRows(
+            columnCount,
+            maxColumnSize,
+            {
+                appendBeforeAll: '╚',
+                appendAfterEach: '╩',
+                appendAfterAll: '╝' + os.EOL
             }
-            result += '╩';
-        }
-        for (let i = 0; i < maxColumnSize; i++) {
-            result += '═';
-        }
-        result += '╝' + os.EOL;
+        );
     }
     return result;
 }
 
 function getStringTableData(dataSets) {
-    const rowsCount = dataSets.length;
-    let maxColumnSize = getMaxColumnSize(dataSets);
-    let result = '';
-    if (maxColumnSize % 2 === 0) {
-        maxColumnSize += 2;
-    } else {
-        maxColumnSize += 3;
-    }
+    const maxColumnSize = getMaxColumnSize(dataSets);
     const columnCount = getColumnCount(dataSets);
+    const rowsCount = dataSets.length;
+
+    let result = '';
+
     for (let row = 0; row < rowsCount; row++) {
         const values = dataSets[row].getValues();
-        result += '║';
-        for (let column = 0; column < columnCount; column++) {
-            const valuesLength = values[column].toString().length;
-            if (valuesLength % 2 === 0) {
-                for (let j = 0; j < (maxColumnSize - valuesLength) / 2; j++) {
-                    result += ' ';
-                }
-                result += values[column].toString();
-                for (let j = 0; j < (maxColumnSize - valuesLength) / 2; j++) {
-                    result += ' ';
-                }
-                result += '║';
-            } else {
-                for (let j = 0; j < Math.trunc((maxColumnSize - valuesLength) / 2); j++) {
-                    result += ' ';
-                }
-                result += values[column].toString();
-                for (let j = 0; j <= Math.trunc((maxColumnSize - valuesLength) / 2); j++) {
-                    result += ' ';
-                }
-                result += '║';
+
+        result += getProceededColumns(
+            {
+                columnNames: values,
+                columnCount,
+                maxColumnSize,
+            },
+            {
+                appendBeforeAll: '║',
+                appendAfterEach: '║',
+                appendAfterAll: os.EOL
             }
-        }
-        result += os.EOL;
+        );
+
         if (row < rowsCount - 1) {
-            result += '╠';
-            for (let j = 1; j < columnCount; j++) {
-                for (let i = 0; i < maxColumnSize; i++) {
-                    result += '═';
+            result += getProceededRows(
+                columnCount,
+                maxColumnSize,
+                {
+                    appendBeforeAll: '╠',
+                    appendAfterEach: '╬',
+                    appendAfterAll: '╣' + os.EOL
                 }
-                result += '╬';
-            }
-            for (let i = 0; i < maxColumnSize; i++) {
-                result += '═';
-            }
-            result += '╣' + os.EOL;
+            );
         }
     }
-    result += '╚';
-    for (let j = 1; j < columnCount; j++) {
-        for (let i = 0; i < maxColumnSize; i++) {
-            result += '═';
+
+    result += getProceededRows(
+        columnCount,
+        maxColumnSize,
+        {
+            appendBeforeAll: '╚',
+            appendAfterAll: '╝' + os.EOL,
+            appendAfterEach: '╩'
         }
-        result += '╩';
-    }
-    for (let i = 0; i < maxColumnSize; i++) {
-        result += '═';
-    }
-    result += '╝' + os.EOL;
+    );
+
     return result;
 }
 
 function getTableString(data, tableName) {
-    const maxColumnSize = getMaxColumnSize(data);
+    const maxColumnSize = getMaxColumnSize(data, { align: false });
     if (maxColumnSize === 0) {
         return getEmptyTable(tableName);
     } else {
