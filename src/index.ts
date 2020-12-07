@@ -1,4 +1,6 @@
 import { Node } from './Node';
+import { DijkstraAlgorithm } from './DijkstraAlgorithm';
+import { ShortestRoute } from './ShortestRoute';
 
 import graphTemplate from './graphs/graph1.json';
 
@@ -23,6 +25,6 @@ const createGraphFromTemplate = (template: Record<string, Record<string, number>
 
 const graphItems = createGraphFromTemplate(graphTemplate);
 
-graphItems.forEach((item) => {
-  console.log(item.id, item.siblings);
-});
+const shortestRoute = new ShortestRoute(new DijkstraAlgorithm(), graphItems);
+
+shortestRoute.find(graphItems[0], graphItems[4]);
