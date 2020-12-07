@@ -1,0 +1,40 @@
+{
+  "node_0": {
+    "node_1": 3,
+    "node_3": 2,
+    "node_8": 4
+  },
+  "node_1": {
+    "node_0": 3,
+    "node_7": 4
+  },
+  "node_2": {
+    "node_7": 2,
+    "node_5": 1,
+    "node_3": 6
+  },
+  "node_3": {
+    "node_0": 2,
+    "node_4": 1,
+    "node_2": 6
+  },
+  "node_4": {
+    "node_3": 1,
+    "node_8": 8
+  },
+  "node_5": {
+    "node_2": 1,
+    "node_6": 8
+  },
+  "node_6": {
+    "node_5": 8
+  },
+  "node_7": {
+    "node_1": 4,
+    "node_2": 2
+  },
+  "node_8": {
+    "node_0": 4,
+    "node_4": 8
+  }
+}
