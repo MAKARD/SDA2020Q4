@@ -8,7 +8,7 @@ const createGraphFromTemplate = (template: Record<string, Record<string, number>
   const graphStore: Record<string, Node> = {};
 
   Object.keys(template).forEach((key) => {
-    graphStore[key] = new Node();
+    graphStore[key] = new Node([]);
   });
 
   Object.keys(graphStore).forEach((key) => {
@@ -25,6 +25,14 @@ const createGraphFromTemplate = (template: Record<string, Record<string, number>
 
 const graphItems = createGraphFromTemplate(graphTemplate);
 
-const shortestRoute = new ShortestRoute(new DijkstraAlgorithm(), graphItems);
+const algorithm = new DijkstraAlgorithm();
+const shortestRoute = new ShortestRoute(algorithm);
 
-shortestRoute.find(graphItems[0], graphItems[4]);
+shortestRoute
+  .find(graphItems[0], graphItems[6])
+  .then((result) => {
+    console.log(result.route);
+    console.log(result.distance);
+    console.log(algorithm.getAdjacencyMatrix());
+    console.log(algorithm.getGraphMap());
+  });

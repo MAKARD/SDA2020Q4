@@ -1,20 +1,26 @@
 import { Node } from './Node';
 
 export interface Algorithm {
-  set: (graph: Array<Node>) => void;
-  execute: (from: Node, to: Node) => Array<Node>;
+  reset: () => void;
+  execute: (from: Node) => Promise<void>;
+  getPath: (from: Node, to: Node) => Promise<Array<Node>>;
+  getDistance: (from: Node, to: Node) => number;
 }
 
 export class ShortestRoute {
   private algorithm: Algorithm;
 
-  constructor(algorithm: Algorithm, graph: Array<Node>) {
+  constructor(algorithm: Algorithm) {
     this.algorithm = algorithm;
-
-    algorithm.set(graph);
   }
 
-  public find(from: Node, to: Node): Array<Node> {
-    return this.algorithm.execute(from, to);
+  public async find(from: Node, to: Node) {
+    this.algorithm.reset();
+    await this.algorithm.execute(from);
+
+    return {
+      route: await this.algorithm.getPath(from, to),
+      distance: this.algorithm.getDistance(from, to)
+    };
   }
 }
